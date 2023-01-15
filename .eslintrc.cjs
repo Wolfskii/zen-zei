@@ -1,12 +1,19 @@
 module.exports = {
 	root: true,
 	parser: '@typescript-eslint/parser',
-	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier', 'standard'],
 	plugins: ['svelte3', '@typescript-eslint'],
 	ignorePatterns: ['*.cjs'],
 	overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
 	settings: {
 		'svelte3/typescript': () => require('typescript')
+	},
+	rules: {
+		semi: ['error', 'never'],
+		quotes: ['error', 'single'],
+		'comma-dangle': ['error', 'never'],
+		indent: ['error', 'tab'],
+		'no-tabs': 'off'
 	},
 	parserOptions: {
 		sourceType: 'module',
@@ -17,4 +24,4 @@ module.exports = {
 		es2017: true,
 		node: true
 	}
-};
+}
