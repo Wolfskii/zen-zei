@@ -3,9 +3,9 @@
 </script>
 
 <header>
-	<div class="corner">
+	<!-- 	<div class="corner">
 		<a href="#">
-			<!-- <img src={logo} alt="SvelteKit" /> -->
+			<img src={logo} alt="SvelteKit" />
 		</a>
 	</div>
 
@@ -18,7 +18,7 @@
 				<a href="/about">About</a>
 			</li>
 		</ul>
-	</nav>
+	</nav> -->
 </header>
 
 <style>

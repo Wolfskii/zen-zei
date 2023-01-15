@@ -1,14 +1,19 @@
 <script>
 </script>
 
-<svelte:head>
-	<title>Zen-Zei</title>
-	<meta name="description" content="Zen-Zei application" />
-</svelte:head>
-
-<section>
+<div class="intro">
 	<h1>Zen-Zei</h1>
-</section>
+	<p class="sub-heading">Relax to sounds of the nature</p>
+</div>
 
 <style>
+	:global(:root) {
+		display: flex;
+		justify-content: center;
+	}
+
+	.intro {
+		display: flex;
+		flex-direction: column;
+	}
 </style>

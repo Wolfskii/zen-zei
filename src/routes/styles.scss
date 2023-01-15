@@ -4,12 +4,14 @@
 :root {
 	font-family: 'Libre Franklin', sans-serif;
 	color: #bdbcbb;
+	font-size: 16px;
 }
 
 body {
 	background-color: #000000;
 	min-height: 100vh;
 	margin: 0;
+	padding: 0;
 }
 
 h1,
@@ -20,9 +22,63 @@ h5,
 h6 {
 	font-family: 'Cardo', serif;
 	color: #ffffff;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	font-size: 4rem;
+}
+
+p {
+	margin: 0;
+	padding: 0;
 }
 
 a {
 	color: #ffffff;
 	text-decoration: none; /* no underline */
+	margin: 0;
+	padding: 0;
+}
+
+ul,
+ol,
+li,
+table,
+thead,
+tbody,
+th,
+td {
+	margin: 0;
+	padding: 0;
+}
+
+#app {
+	position: relative;
+	overflow: hidden;
+	z-index: 2;
+}
+
+#overlay {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	min-width: 100%;
+	min-height: 100vh;
+	background-color: rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+#bg-video {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	min-width: 100%;
+	min-height: 100vh;
+	z-index: 0;
+}
+
+.sub-heading {
+	font-size: 1.2rem;
 }
