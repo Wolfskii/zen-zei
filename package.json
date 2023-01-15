@@ -2,16 +2,15 @@
 	"name": "zen-zei",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "vite dev --open --host 0.0.0.0 --port 3000",
-		"build": "vite build",
+		"dev": "vite dev --host 0.0.0.0 --port 3000",
+		"start": "cross-env NAME=$npm_package_name concurrently \"npm run dev\" \"lt --port 3000 --subdomain ${NAME}-webble\"",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write .",
-		"start": "npm run dev"
+		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
@@ -22,6 +21,8 @@
 		"@types/cookie": "^0.5.1",
 		"@typescript-eslint/eslint-plugin": "^5.48.1",
 		"@typescript-eslint/parser": "^5.48.1",
+		"concurrently": "^7.6.0",
+		"cross-env": "^7.0.3",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-config-standard": "^17.0.0",
@@ -30,6 +31,7 @@
 		"eslint-plugin-promise": "^6.1.1",
 		"eslint-plugin-standard": "^5.0.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"localtunnel": "^2.0.2",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
 		"sass": "^1.57.1",
