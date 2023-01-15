@@ -3,8 +3,16 @@ module.exports = {
 	parser: '@typescript-eslint/parser',
 	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier', 'standard'],
 	plugins: ['svelte3', '@typescript-eslint'],
-	ignorePatterns: ['*.cjs'],
-	overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
+	ignorePatterns: ['*.cjs', 'commented out code.sonarlint(typescript:S125)'],
+	overrides: [
+		{
+			files: ['*.svelte'],
+			processor: 'svelte3/svelte3',
+			rules: {
+				'no-tabs': 'off'
+			}
+		}
+	],
 	settings: {
 		'svelte3/typescript': () => require('typescript')
 	},
@@ -13,7 +21,8 @@ module.exports = {
 		quotes: ['error', 'single'],
 		'comma-dangle': ['error', 'never'],
 		indent: ['error', 'tab'],
-		'no-tabs': 'off'
+		'no-tabs': 'off',
+		'@typescript-eslint/no-namespace': 'error'
 	},
 	parserOptions: {
 		sourceType: 'module',
