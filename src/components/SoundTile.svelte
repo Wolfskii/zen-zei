@@ -24,7 +24,7 @@
 			Play
 		{/if}
 	</button>
-	<audio>
+	<audio loop>
 		<source src={soundFile} />
 	</audio>
 	<slot />
