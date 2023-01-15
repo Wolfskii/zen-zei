@@ -1,6 +1,6 @@
 <script lang="ts">
-	let soundName: any
-	let soundFile: any
+	export let soundName: string
+	export let soundFile: string
 	let isPlaying = false
 
 	function togglePlay(event: any) {
@@ -15,7 +15,7 @@
 	}
 </script>
 
-<div>
+<div class="sound-tile">
 	<h3>{soundName}</h3>
 	<button on:click={togglePlay}>
 		{#if isPlaying}
@@ -24,8 +24,20 @@
 			Play
 		{/if}
 	</button>
-	<audio controls autoplay>
-		<source src={soundFile} type="audio/mpeg" />
+	<audio>
+		<source src={soundFile} />
 	</audio>
 	<slot />
 </div>
+
+<style>
+	.sound-tile {
+		background-color: rgba(0, 0, 0, 0.2);
+		aspect-ratio: 1/1;
+		padding: 2rem;
+		border-radius: 10px;
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+	}
+</style>
