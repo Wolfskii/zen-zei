@@ -15,5 +15,5 @@
 <div id="overlay" />
 
 <video autoplay muted loop id="bg-video">
-	<source src="videos/rain.mp4" type="video/mp4" />
+	<source src="%sveltekit.assets%/videos/rain.mp4" type="video/mp4" />
 </video>

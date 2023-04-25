@@ -9,7 +9,7 @@
 
 <div class="sound-tiles">
 	<SoundTile soundName="Thunder" youTubeUrl="https://www.youtube.com/watch?v=NI0M03vCoXg" />
-	<SoundTile soundName="Rain" soundFile="sounds/rain.wav" />
+	<SoundTile soundName="Rain" soundFile="%sveltekit.assets%/sounds/rain.wav" />
 </div>
 
 <style>
