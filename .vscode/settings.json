@@ -2,5 +2,8 @@
 	"yaml.schemas": {
 		"https://json.schemastore.org/github-action.json": "file:///d%3A/Projects/zen-zei/.github/workflows/deploy.yml"
 	},
-	"cSpell.words": ["precompress"]
+	"cSpell.words": ["precompress"],
+	"files.associations": {
+		"*.yaml": "home-assistant"
+	}
 }
