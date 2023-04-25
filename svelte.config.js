@@ -5,6 +5,11 @@ import { vitePreprocess } from '@sveltejs/kit/vite'
 const config = {
 	preprocess: vitePreprocess(),
 	kit: {
+		csp: {
+			directives: {
+				'style-src': ['unsafe-inline']
+			}
+		},
 		adapter: adapter({
 			// default options are shown. On some platforms
 			// these options are set automatically — see below
