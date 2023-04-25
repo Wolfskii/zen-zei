@@ -29,7 +29,8 @@ jobs:
         run: |
           npm ci
           npm run build
-      - name: Deploy to GitHub Pages 🚀
-        uses: actions/deploy-pages@v2
+      - name: Deploy 🚀
+        run: npm run deploy
         with:
+          folder: build # The folder the action should deploy
           token: ${{ secrets.GH_TOKEN }} # The secret to use for authentication
