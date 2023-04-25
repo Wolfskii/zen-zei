@@ -7,12 +7,20 @@
 
 	function onYouTubeIframeAPIReady() {
 		player = new window.YT.Player('player', {
-			height: '390',
-			width: '640',
+			height: '0',
+			width: '0',
 			videoId: getYouTubeVideoId(),
 			host: 'https://www.youtube-nocookie.com',
 			playerVars: {
+				autoplay: 0,
+				controls: 0,
+				disablekb: 1,
+				enablejsapi: 1,
+				loop: 1,
+				modestbranding: 1,
 				playsinline: 1,
+				showinfo: 0,
+				iv_load_policy: 3,
 				origin: window.location.host
 			},
 			events: {
