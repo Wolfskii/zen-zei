@@ -8,13 +8,13 @@
 		<meta http-equiv="content-security-policy" content="">
 		<link href="./_app/immutable/assets/_layout.bb1794dc.css" rel="stylesheet">
 		<link href="./_app/immutable/assets/_page.d7927e1c.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.2f1f78af.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.c04f033a.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index.67a2fb7e.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.06554e05.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/paths.cdc43994.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.13eca367.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/_layout.svelte.eab6869d.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/_page.svelte.69cf715b.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.b7e9198a.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/paths.d83f9e1e.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.b1e6da6c.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_layout.svelte.668f85bf.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_page.svelte.4dc662ee.js">
 		<link rel="modulepreload" href="./_app/immutable/entry/_page.ts.9c5eea7e.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/_page.da46b06b.js">
 	</head>
@@ -34,7 +34,7 @@
 </div>
 	<div class="sound-tile svelte-20ljdp"><h3>Rain</h3>
 	<button>Play</button>
-	<audio loop><source src="/_app/immutable/assets/rain.63b02e0a.wav"></audio>
+	<audio loop><source src="sounds/rain.wav"></audio>
 	
 </div>
 </div></main>
@@ -42,13 +42,13 @@
 
 <div id="overlay"></div>
 
-<video autoplay muted loop id="bg-video"><source src="/_app/immutable/assets/rain.056e51b3.mp4" type="video/mp4"></video>
+<video autoplay muted loop id="bg-video"><source src="videos/rain.mp4" type="video/mp4"></video>
 
 
 			
 			<script>
 				{
-					__sveltekit_1fdd5z3 = {
+					__sveltekit_1laun2w = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						env: {}
 					};
@@ -58,8 +58,8 @@
 					const data = [null,null];
 
 					Promise.all([
-						import("./_app/immutable/entry/start.2f1f78af.js"),
-						import("./_app/immutable/entry/app.13eca367.js")
+						import("./_app/immutable/entry/start.c04f033a.js"),
+						import("./_app/immutable/entry/app.b1e6da6c.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 2],
