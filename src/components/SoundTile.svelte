@@ -1,43 +1,14 @@
 <script lang="ts">
-	export let soundName: string
-	export let soundFile: string
-	let isPlaying = false
+	import SoundTileLocalFile from './SoundTileLocalFile.svelte'
+	import SoundTileYoutube from './SoundTileYoutube.svelte'
 
-	function togglePlay(event: any) {
-		const audio = event.target.nextElementSibling as HTMLAudioElement
-		if (audio.paused) {
-			audio.play()
-			isPlaying = true
-		} else {
-			audio.pause()
-			isPlaying = false
-		}
-	}
+	export let soundName: string
+	export let soundFile: string = ''
+	export let youTubeUrl: string = ''
 </script>
 
-<div class="sound-tile">
-	<h3>{soundName}</h3>
-	<button on:click={togglePlay}>
-		{#if isPlaying}
-			Pause
-		{:else}
-			Play
-		{/if}
-	</button>
-	<audio loop>
-		<source src={soundFile} />
-	</audio>
-	<slot />
-</div>
-
-<style>
-	.sound-tile {
-		background-color: rgba(0, 0, 0, 0.2);
-		aspect-ratio: 1/1;
-		padding: 2rem;
-		border-radius: 10px;
-		display: flex;
-		flex-direction: column;
-		text-align: center;
-	}
-</style>
+{#if soundFile !== ''}
+	<SoundTileLocalFile {soundName} {soundFile} />
+{:else if youTubeUrl !== ''}
+	<SoundTileYoutube {soundName} {youTubeUrl} />
+{/if}

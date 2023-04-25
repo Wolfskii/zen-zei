@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Rain from '../components/soundtiles/Rain.svelte'
+	import SoundTile from '../components/SoundTile.svelte'
 </script>
 
 <div class="intro">
@@ -8,9 +8,8 @@
 </div>
 
 <div class="sound-tiles">
-	<Rain />
-	<Rain />
-	<Rain />
+	<SoundTile soundName="Thunder" youTubeUrl="https://www.youtube.com/watch?v=HuT_5ckiq_s" />
+	<SoundTile soundName="Rain" soundFile="src/lib/sounds/rain.wav" />
 </div>
 
 <style>
