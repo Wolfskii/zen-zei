@@ -7,8 +7,12 @@ const config = {
 	kit: {
 		csp: {
 			directives: {
-				'style-src': ['unsafe-inline']
+				'default-src': ["'self'", '*'],
+				'style-src': ["'self'", "'unsafe-inline'", '*']
 			}
+		},
+		csrf: {
+			checkOrigin: false
 		},
 		adapter: adapter({
 			// default options are shown. On some platforms
@@ -16,9 +20,12 @@ const config = {
 			pages: 'build',
 			assets: 'build',
 			fallback: null,
-			precompress: false,
+			precompress: true,
 			strict: true
-		})
+		}),
+		paths: {
+			base: '/zen-zei'
+		}
 	}
 }
 
