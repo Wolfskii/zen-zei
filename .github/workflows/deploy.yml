@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: Checkout code 🛎️
         uses: actions/checkout@v2
+      - name: Set Git user identity
+        run: |
+          git config --global user.name "Wolfskii"
+          git config --global user.email "dawid.kaleta@outlook.com"
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
@@ -29,3 +33,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: build # The folder the action should deploy.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
