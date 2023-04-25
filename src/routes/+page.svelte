@@ -5,7 +5,7 @@
 
 <div class="intro">
 	<h1>Zen-Zei</h1>
-	<p class="sub-heading">Relax to sounds of nature</p>
+	<p class="sub-heading">Relax to the sounds of nature</p>
 </div>
 
 <div class="sound-tiles">
