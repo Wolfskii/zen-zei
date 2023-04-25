@@ -29,8 +29,8 @@ jobs:
         run: |
           npm ci
           npm run build
-      - name: Deploy to GitHub Pages
-        id: Deployment 🚀
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
         uses: actions/deploy-pages@v2
         with:
           folder: build # The folder the action should deploy
