@@ -11,8 +11,7 @@
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"build": "vite build",
-		"deploy": "gh-pages -d build"
+		"build": "vite build"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",

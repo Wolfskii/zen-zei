@@ -3,7 +3,6 @@
 // and what to do when importing types
 declare global {
 	interface Window {
-		// eslint-disable-next-line no-undef
 		YT: typeof YT
 		onYouTubeIframeAPIReady: () => void
 	}
