@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Set Git user identity
+        run: |
+          git config --global user.email "dawid.kaleta@outlook.com"
+          git config --global user.name "Dawid Kaleta"
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
