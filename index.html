@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Zen-Zei application</title>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content="">
+		<link href="./_app/immutable/assets/_layout.bb1794dc.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/_page.d7927e1c.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.e14443aa.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.67a2fb7e.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.22f47ec3.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/paths.d9642099.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.9906b8ed.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_layout.svelte.e19d6867.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_page.svelte.6426489e.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_page.ts.9c5eea7e.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/_page.da46b06b.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">
+
+
+<div id="app"><header>
+</header>
+	<main><div class="intro svelte-1iwuu9i"><h1>Zen-Zei</h1>
+	<p class="sub-heading">Relax to sounds of the nature</p></div>
+
+<div class="sound-tiles svelte-1iwuu9i"><div class="sound-tile svelte-20ljdp"><h3>Thunder</h3>
+	<div id="player"></div>
+
+	<button>Play</button>
+</div>
+	<div class="sound-tile svelte-20ljdp"><h3>Rain</h3>
+	<button>Play</button>
+	<audio loop><source src="/_app/immutable/assets/rain.63b02e0a.wav"></audio>
+	
+</div>
+</div></main>
+	<footer></footer></div>
+
+<div id="overlay"></div>
+
+<video autoplay muted loop id="bg-video"><source src="/_app/immutable/assets/rain.056e51b3.mp4" type="video/mp4"></video>
+
+
+			
+			<script>
+				{
+					__sveltekit_80xzq0 = {
+						base: new URL(".", location).pathname.slice(0, -1),
+						env: {}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.e14443aa.js"),
+						import("./_app/immutable/entry/app.9906b8ed.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
