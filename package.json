@@ -2,7 +2,7 @@
 	"name": "zen-zei",
 	"version": "0.0.1",
 	"homepage": "https://wolfskii.github.io/zen-zei/",
-	
+	"type": "module",
 	"scripts": {
 		"dev": "vite dev --host 0.0.0.0 --port 3000",
 		"start": "cross-env NAME=$npm_package_name concurrently \"npm run dev\" \"lt --port 3000 --subdomain ${NAME}-webble\"",
@@ -14,7 +14,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"build": "vite build",
-		"deploy": "gh-pages -d build"
+		"deploy": "vite build && gh-pages -d build"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
@@ -47,6 +47,5 @@
 		"typescript": "^4.9.3",
 		"vite": "^4.0.0",
 		"vitest": "^0.25.3"
-	},
-	"type": "module"
+	}
 }
