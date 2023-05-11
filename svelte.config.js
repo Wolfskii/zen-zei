@@ -5,12 +5,6 @@ import { vitePreprocess } from '@sveltejs/kit/vite'
 const config = {
 	preprocess: vitePreprocess(),
 	kit: {
-		csp: {
-			directives: {
-				'default-src': ["'self'", '*'],
-				'style-src': ["'self'", "'unsafe-inline'", '*']
-			}
-		},
 		csrf: {
 			checkOrigin: false
 		},
@@ -22,10 +16,7 @@ const config = {
 			fallback: null,
 			precompress: true,
 			strict: true
-		}),
-		paths: {
-			base: ''
-		}
+		})
 	}
 }
 
