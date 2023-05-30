@@ -3,7 +3,6 @@
 	"compilerOptions": {
 		"allowJs": true,
 		"checkJs": true,
-		"isolatedModules": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
@@ -11,7 +10,9 @@
 		"sourceMap": true,
 		"strict": true,
 		"ignoreDeprecations": "5.0"
-	},
-	"include": ["src/**/*", "src/node_modules/@types", "src/app.d.ts"],
-	"exclude": ["node_modules", "public/build"]
+	}
+	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
+	//
+	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
+	// from the referenced tsconfig.json - TypeScript does not merge them in
 }
