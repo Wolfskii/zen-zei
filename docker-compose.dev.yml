@@ -1,0 +1,21 @@
+# Local Postgres for `npm run dev`. Production uses docker-compose.yml on Dokploy.
+services:
+  zenzei-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-zenzei}
+      POSTGRES_USER: ${POSTGRES_USER:-zenzei}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zenzei}
+    ports:
+      - "5432:5432"
+    volumes:
+      - zenzei_db_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-zenzei} -d ${POSTGRES_DB:-zenzei}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  zenzei_db_dev:

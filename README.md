@@ -1,42 +1,47 @@
 # Zen-Zei
 
-ASMR-application for relaxation with nature sounds
+Glassmorphism mixer for nature, ASMR, and background loops. Play several tiles at once, each with its own volume, looping play/stop, and a 1–5 star vote. Add more sounds by pasting a YouTube URL or uploading a file.
 
-## create-svelte
+The library and ratings are shared (Postgres). Mix state (what you were playing, volumes) stays in this browser.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+## Quick start (local)
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
+cp .env.example .env
+# For local Docker Postgres, set:
+#   POSTGRES_PASSWORD=zenzei
+#   DATABASE_URL=postgres://zenzei:zenzei@localhost:5432/zenzei
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+npm install
+npm run db:up
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+Open [http://localhost:5173](http://localhost:5173).
 
-To create a production version of your app:
+## Production (Dokploy)
+
+See [docs/deployment.md](docs/deployment.md). Compose publishes **38136 → 8080**. Create `dokploy-network` once, copy `.env.example` → `.env`, set a real `POSTGRES_PASSWORD` and optional `ZENZEI_ADMIN_API_KEY`.
 
 ```bash
-npm run build
+docker network create dokploy-network
+docker compose up --build -d
 ```
 
-You can preview the production build with `npm run preview`.
+## Docs
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- [Architecture](docs/architecture.md)
+- [HTTP API](docs/api.md)
+- [Development](docs/development.md)
+- [Deployment](docs/deployment.md)
+- [AGENTS.md](AGENTS.md) for coding agents
+
+## Scripts
+
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Vite + SvelteKit on port 5173 |
+| `npm run db:up` | Postgres 16 via `docker-compose.dev.yml` |
+| `npm test` | Vitest (YouTube URL parser) |
+| `npm run check` | `svelte-check` |
+| `npm run build` / `npm start` | Adapter-node server |

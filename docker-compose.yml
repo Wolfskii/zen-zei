@@ -1,0 +1,66 @@
+services:
+  zenzei:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      HOST: ${ZENZEI_HOST:-0.0.0.0}
+      # Always 8080 inside the container. Dokploy domain "Container Port" must be 8080.
+      PORT: "8080"
+      BODY_SIZE_LIMIT: ${BODY_SIZE_LIMIT:-25M}
+      DATABASE_URL: postgres://${POSTGRES_USER:-zenzei}:${POSTGRES_PASSWORD:-change-me}@zenzei-db:5432/${POSTGRES_DB:-zenzei}
+      ZENZEI_ADMIN_API_KEY: ${ZENZEI_ADMIN_API_KEY:-}
+      ZENZEI_UPLOAD_DIR: /data/uploads
+      ZENZEI_SEED: ${ZENZEI_SEED:-1}
+      ZENZEI_MAX_AUDIO_BYTES: ${ZENZEI_MAX_AUDIO_BYTES:-20971520}
+      ZENZEI_MAX_COVER_BYTES: ${ZENZEI_MAX_COVER_BYTES:-2097152}
+    depends_on:
+      zenzei-db:
+        condition: service_healthy
+    expose:
+      - "8080"
+    ports:
+      - "${ZENZEI_HOST_PORT:-38136}:8080"
+    volumes:
+      - zenzei_uploads:/data/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8080/api/v1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      dokploy-network:
+        aliases:
+          - zenzei
+
+  zenzei-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-zenzei}
+      POSTGRES_USER: ${POSTGRES_USER:-zenzei}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    volumes:
+      - zenzei_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-zenzei} -d ${POSTGRES_DB:-zenzei}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      dokploy-network:
+        aliases:
+          - zenzei-db
+
+networks:
+  dokploy-network:
+    external: true
+
+volumes:
+  zenzei_db_data:
+  zenzei_uploads:
