@@ -1,34 +1,26 @@
 <script lang="ts">
-	import { Plus, Settings } from '@lucide/svelte'
+	import { Plus } from '@lucide/svelte'
 	import Button from './ui/Button.svelte'
-	import IconButton from './ui/IconButton.svelte'
 
-	let {
-		onadd,
-		onsettings
-	}: {
-		onadd: () => void
-		onsettings: () => void
-	} = $props()
+	let { onadd, quiet = false, now = '' }: { onadd: () => void; quiet?: boolean; now?: string } = $props()
 </script>
 
-<header class="header glass">
+<header class="header glass" class:quiet>
 	<a href="/" class="brand">
 		<span class="mark">Z</span>
 		<span>
 			<strong>Zen-Zei</strong>
-			<small>layered quiet</small>
+			<small>{now || 'layered quiet'}</small>
 		</span>
 	</a>
-	<div class="actions">
-		<IconButton label="Settings" onclick={onsettings}>
-			<Settings size={18} />
-		</IconButton>
-		<Button variant="primary" onclick={onadd}>
-			<Plus size={16} />
-			Add sound
-		</Button>
-	</div>
+	{#if !quiet}
+		<div class="actions">
+			<Button variant="primary" onclick={onadd}>
+				<Plus size={16} />
+				Add sound
+			</Button>
+		</div>
+	{/if}
 </header>
 
 <style>
@@ -73,13 +65,22 @@
 	}
 
 	small {
+		display: block;
 		color: var(--muted);
 		font-size: 0.75rem;
+		max-width: min(42vw, 18rem);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.actions {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
+	}
+
+	.header.quiet {
+		margin-bottom: 0.65rem;
 	}
 </style>

@@ -3,7 +3,7 @@
  * Keep this file free of Node-only imports so Svelte components can use it.
  */
 
-export type SoundKind = 'youtube' | 'file'
+export type SoundKind = 'youtube' | 'file' | 'url'
 
 export type Category = {
 	id: string
@@ -29,6 +29,8 @@ export type Sound = {
 	category: Category
 	youtubeUrl: string | null
 	youtubeVideoId: string | null
+	/** Original MP3/WAV link when `kind` is `url`. */
+	audioRemoteUrl: string | null
 	icon: string | null
 	coverUrl: string | null
 	audioUrl: string | null
@@ -44,4 +46,6 @@ export type MixChannelSnapshot = {
 export type MixSnapshot = {
 	masterVolume: number
 	channels: Record<string, MixChannelSnapshot>
+	/** Epoch ms when the sleep timer should stop the mix. */
+	sleepUntil?: number | null
 }

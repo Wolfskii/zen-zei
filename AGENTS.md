@@ -10,6 +10,7 @@ Browser (Svelte 5)
   Mix engine (src/lib/audio/mix.svelte.ts)
     ├─ YouTube IFrame API (one loader, unique player mounts in #mix-stage)
     └─ HTMLAudioElement (loop, Range-capable /api/v1/sounds/:id/audio)
+        │     uploads, bundled Rain, or proxied MP3/WAV links (`url:` in audio_path)
         │
         ▼
 SvelteKit adapter-node
@@ -22,12 +23,12 @@ SvelteKit adapter-node
 1. Playback stays in the browser. The server never transcodes YouTube.
 2. Shared catalog and votes go through `/api/v1`. Do not fake a global store with `localStorage`.
 3. Load the YouTube IFrame API once. Never hardcode `id="player"`.
-4. New visual controls belong in `src/lib/components/ui` first, then feature components compose them.
+4. New visual controls belong in `src/lib/components/ui` first, then feature components compose them (`SearchField`, sleep/share/mute/save on `MixBar`, tile Picture/Icon look in `AddSoundModal`, `SceneStrip`, `ShortcutsHint`).
 5. Glass tokens live in `src/lib/styles/global.css`. Do not introduce a third-party UI kit.
 6. Do not commit `.env` or uploaded blobs.
-7. Custom audio is stored on the uploads volume; bundled Rain is `bundled:sounds/rain.wav`.
+7. Custom audio is stored on the uploads volume; bundled Rain is `bundled:sounds/rain.wav`. Remote MP3/WAV links are `url:https://…` and proxied through `/api/v1/sounds/:id/audio`.
 8. One vote per sound per `zenzei_voter` cookie (upsert).
-9. Delete/edit requires `ZENZEI_ADMIN_API_KEY` (`x-admin-key`).
+9. Catalog edits (edit/delete) happen on `/admin` with `ZENZEI_ADMIN_API_KEY` (`x-admin-key`).
 10. Update `docs/api.md` when changing endpoints.
 
 ## How to add a UI primitive

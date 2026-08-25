@@ -17,7 +17,7 @@ npm run db:up
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173).
+Open [http://localhost:5173](http://localhost:5173). Catalog edits live at [http://localhost:5173/admin](http://localhost:5173/admin) (same value as `ZENZEI_ADMIN_API_KEY`).
 
 ## Production (Dokploy)
 

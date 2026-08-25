@@ -1,8 +1,9 @@
 import { and, asc, avg, count, eq } from 'drizzle-orm'
 import { unlink } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { Category, Sound } from '$lib/types'
-import { youtubeThumbnailUrl } from '$lib/youtube'
+import type { Category, Sound, SoundKind } from '$lib/types'
+import { isIconCover, publicCoverUrl } from '$lib/cover'
+import { fromStoredAudioUrl } from './remote-audio'
 import { db } from './db'
 import { categories, sounds, votes } from './schema'
 import { absoluteUploadPath } from './uploads'
@@ -67,7 +68,7 @@ export async function getSound(id: string, voterId: string): Promise<Sound | nul
 }
 
 export type NewSoundInput = {
-	kind: 'youtube' | 'file'
+	kind: SoundKind
 	name: string
 	description: string
 	categoryId: string
@@ -78,8 +79,8 @@ export type NewSoundInput = {
 	coverPath?: string | null
 }
 
-export async function createSound(input: NewSoundInput, voterId: string): Promise<Sound> {
-	const id = crypto.randomUUID()
+export async function createSound(input: NewSoundInput & { id?: string }, voterId: string): Promise<Sound> {
+	const id = input.id ?? crypto.randomUUID()
 	await db.insert(sounds).values({
 		id,
 		kind: input.kind,
@@ -99,7 +100,7 @@ export async function createSound(input: NewSoundInput, voterId: string): Promis
 
 export async function updateSound(
 	id: string,
-	patch: Partial<Pick<NewSoundInput, 'name' | 'description' | 'categoryId' | 'icon' | 'coverPath'>>,
+	patch: Partial<NewSoundInput>,
 	voterId: string
 ): Promise<Sound | null> {
 	const [existing] = await db.select().from(sounds).where(eq(sounds.id, id)).limit(1)
@@ -112,9 +113,19 @@ export async function updateSound(
 			description: patch.description?.trim() ?? existing.description,
 			categoryId: patch.categoryId ?? existing.categoryId,
 			icon: patch.icon === undefined ? existing.icon : patch.icon,
-			coverPath: patch.coverPath === undefined ? existing.coverPath : patch.coverPath
+			coverPath: patch.coverPath === undefined ? existing.coverPath : patch.coverPath,
+			audioPath: patch.audioPath === undefined ? existing.audioPath : patch.audioPath,
+			youtubeUrl: patch.youtubeUrl === undefined ? existing.youtubeUrl : patch.youtubeUrl,
+			youtubeVideoId: patch.youtubeVideoId === undefined ? existing.youtubeVideoId : patch.youtubeVideoId
 		})
 		.where(eq(sounds.id, id))
+
+	if (patch.audioPath && existing.audioPath && patch.audioPath !== existing.audioPath) {
+		await removeFile(existing.audioPath)
+	}
+	if (patch.coverPath !== undefined && existing.coverPath && patch.coverPath !== existing.coverPath) {
+		await removeFile(existing.coverPath)
+	}
 
 	return getSound(id, voterId)
 }
@@ -149,8 +160,19 @@ export async function upsertVote(soundId: string, voterId: string, stars: number
 }
 
 export async function getAudioPath(id: string): Promise<string | null> {
+	const source = await getAudioSource(id)
+	return source?.kind === 'file' ? source.path : null
+}
+
+export type AudioSource = { kind: 'file'; path: string } | { kind: 'remote'; url: string }
+
+export async function getAudioSource(id: string): Promise<AudioSource | null> {
 	const [row] = await db.select({ audioPath: sounds.audioPath }).from(sounds).where(eq(sounds.id, id)).limit(1)
-	return resolveStoredPath(row?.audioPath ?? null)
+	if (!row?.audioPath) return null
+	const remote = fromStoredAudioUrl(row.audioPath)
+	if (remote) return { kind: 'remote', url: remote }
+	const path = resolveStoredPath(row.audioPath)
+	return path ? { kind: 'file', path } : null
 }
 
 export async function getCoverPath(id: string): Promise<string | null> {
@@ -159,7 +181,7 @@ export async function getCoverPath(id: string): Promise<string | null> {
 }
 
 function resolveStoredPath(stored: string | null): string | null {
-	if (!stored) return null
+	if (!stored || isIconCover(stored) || stored.startsWith('url:')) return null
 	if (stored.startsWith('bundled:')) {
 		return join(process.cwd(), 'static', ...stored.slice('bundled:'.length).split('/'))
 	}
@@ -176,9 +198,15 @@ function toCategory(row: CategoryRow): Category {
 	}
 }
 
+function toKind(raw: string): SoundKind {
+	if (raw === 'file') return 'file'
+	if (raw === 'url') return 'url'
+	return 'youtube'
+}
+
 function toSound(row: SoundRow, category: CategoryRow, average: number, count: number, mine: number | null): Sound {
-	const kind = row.kind === 'file' ? 'file' : 'youtube'
-	const coverUrl = row.coverPath ? `/api/v1/sounds/${row.id}/cover` : row.youtubeVideoId ? youtubeThumbnailUrl(row.youtubeVideoId) : null
+	const kind = toKind(row.kind)
+	const coverUrl = publicCoverUrl(row.id, row.coverPath, row.youtubeVideoId)
 
 	return {
 		id: row.id,
@@ -188,16 +216,17 @@ function toSound(row: SoundRow, category: CategoryRow, average: number, count: n
 		category: toCategory(category),
 		youtubeUrl: row.youtubeUrl,
 		youtubeVideoId: row.youtubeVideoId,
+		audioRemoteUrl: fromStoredAudioUrl(row.audioPath),
 		icon: row.icon,
 		coverUrl,
-		audioUrl: kind === 'file' ? `/api/v1/sounds/${row.id}/audio` : null,
+		audioUrl: kind === 'youtube' ? null : `/api/v1/sounds/${row.id}/audio`,
 		rating: { average, count, mine },
 		createdAt: row.createdAt.toISOString()
 	}
 }
 
 async function removeFile(relative: string | null): Promise<void> {
-	if (!relative || relative.startsWith('bundled:')) return
+	if (!relative || relative.startsWith('bundled:') || relative.startsWith('url:') || isIconCover(relative)) return
 	try {
 		await unlink(absoluteUploadPath(relative))
 	} catch {

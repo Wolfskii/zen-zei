@@ -35,12 +35,18 @@ export const api = {
 		request<{ videoId: string; title: string; thumbnailUrl: string; watchUrl: string }>(
 			`/api/v1/youtube/preview?url=${encodeURIComponent(url)}`
 		),
+	previewAudio: (url: string) =>
+		request<{ url: string; contentType: string; suggestedName: string }>(`/api/v1/audio/preview?url=${encodeURIComponent(url)}`),
 	createYouTube: (body: { name: string; description: string; categoryId: string; icon: string | null; youtubeUrl: string }) =>
 		request<{ sound: Sound }>('/api/v1/sounds', { method: 'POST', body: JSON.stringify(body) }),
+	create: (form: FormData) => request<{ sound: Sound }>('/api/v1/sounds', { method: 'POST', body: form }),
 	createFile: (form: FormData) => request<{ sound: Sound }>('/api/v1/sounds', { method: 'POST', body: form }),
 	vote: (id: string, stars: number) => request<{ sound: Sound }>(`/api/v1/sounds/${id}/vote`, { method: 'POST', body: JSON.stringify({ stars }) }),
+	update: (id: string, body: Record<string, unknown>) => request<{ sound: Sound }>(`/api/v1/sounds/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+	updateForm: (id: string, form: FormData) => request<{ sound: Sound }>(`/api/v1/sounds/${id}`, { method: 'PATCH', body: form }),
 	remove: (id: string) => request<{ ok: boolean }>(`/api/v1/sounds/${id}`, { method: 'DELETE' }),
-	categories: () => request<{ categories: Category[] }>('/api/v1/categories')
+	categories: () => request<{ categories: Category[] }>('/api/v1/categories'),
+	adminSession: () => request<{ ok: boolean }>('/api/v1/admin/session')
 }
 
 export function setAdminKey(key: string): void {

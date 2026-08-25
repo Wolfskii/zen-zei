@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseYouTubeVideoId } from '$lib/youtube'
+import { parseYouTubeVideoId, youtubeThumbnailUrl, youtubeWatchUrl } from '$lib/youtube'
 
 describe('parseYouTubeVideoId', () => {
 	it('accepts a bare id', () => {
@@ -16,5 +16,11 @@ describe('parseYouTubeVideoId', () => {
 	it('rejects junk', () => {
 		expect(parseYouTubeVideoId('https://example.com')).toBeNull()
 		expect(parseYouTubeVideoId('')).toBeNull()
+	})
+
+	it('uses a 16:9 YouTube still so tiles are not letterboxed', () => {
+		expect(youtubeThumbnailUrl('NI0M03vCoXg')).toContain('maxresdefault.jpg')
+		expect(youtubeThumbnailUrl('NI0M03vCoXg', 'mq')).toContain('mqdefault.jpg')
+		expect(youtubeWatchUrl('NI0M03vCoXg')).toBe('https://www.youtube.com/watch?v=NI0M03vCoXg')
 	})
 })

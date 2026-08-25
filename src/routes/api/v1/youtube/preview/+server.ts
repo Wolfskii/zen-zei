@@ -26,7 +26,7 @@ export const GET: RequestHandler = async ({ url }) => {
 		return json({
 			videoId,
 			title: data.title ?? '',
-			thumbnailUrl: data.thumbnail_url ?? youtubeThumbnailUrl(videoId),
+			thumbnailUrl: youtubeThumbnailUrl(videoId),
 			watchUrl: watch
 		})
 	} catch {

@@ -39,8 +39,13 @@ function isVideoId(value: string | null | undefined): value is string {
 	return typeof value === 'string' && /^[a-zA-Z0-9_-]{11}$/.test(value)
 }
 
-export function youtubeThumbnailUrl(videoId: string): string {
-	return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+/**
+ * 16:9 stills. `hqdefault` is 4:3 with black bars and will not fill a square tile.
+ * `maxresdefault` is sharp when YouTube has it; `mqdefault` always exists.
+ */
+export function youtubeThumbnailUrl(videoId: string, quality: 'max' | 'mq' = 'max'): string {
+	const file = quality === 'mq' ? 'mqdefault.jpg' : 'maxresdefault.jpg'
+	return `https://i.ytimg.com/vi/${videoId}/${file}`
 }
 
 export function youtubeWatchUrl(videoId: string): string {

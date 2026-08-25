@@ -20,7 +20,10 @@ POSTGRES_DB=zenzei
 DATABASE_URL=postgres://zenzei:zenzei@localhost:5432/zenzei
 ZENZEI_UPLOAD_DIR=./data/uploads
 ZENZEI_SEED=1
+ZENZEI_ADMIN_API_KEY=dev-admin-key
 ```
+
+Open [http://localhost:5173/admin](http://localhost:5173/admin) and paste that admin key to add, edit, or delete catalog entries. Restart `npm run dev` after changing `.env`.
 
 ```bash
 npm install

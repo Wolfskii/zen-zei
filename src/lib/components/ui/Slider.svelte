@@ -28,6 +28,7 @@
 		{value}
 		{disabled}
 		aria-label={label}
+		style="--pct: {((value - min) / (max - min)) * 100}%"
 		oninput={(event) => oninput?.(Number((event.currentTarget as HTMLInputElement).value))}
 	/>
 </label>
@@ -42,10 +43,11 @@
 		-webkit-appearance: none;
 		appearance: none;
 		width: 100%;
-		height: 0.35rem;
+		height: 0.45rem;
 		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.16);
+		background: linear-gradient(90deg, var(--accent) 0%, var(--accent) var(--pct, 100%), rgba(255, 255, 255, 0.16) var(--pct, 100%));
 		outline: none;
+		cursor: pointer;
 	}
 
 	input::-webkit-slider-thumb {

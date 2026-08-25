@@ -1,8 +1,10 @@
 import { json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
+import { VISUAL_ICON } from '$lib/cover'
 import { env } from '$lib/server/env'
 import { jsonError } from '$lib/server/http'
 import { clientKey, rateLimit } from '$lib/server/rate-limit'
+import { probeRemoteAudio, toStoredAudioUrl } from '$lib/server/remote-audio'
 import { createSound, getCategory, listSounds } from '$lib/server/sounds'
 import { isAudioType, isCoverType, saveUpload } from '$lib/server/uploads'
 import { parseYouTubeVideoId, youtubeWatchUrl } from '$lib/youtube'
@@ -27,7 +29,16 @@ export const POST: RequestHandler = async (event) => {
 		return json({ sound: await createFromJson(await event.request.json(), event.locals.voterId) }, { status: 201 })
 	} catch (error) {
 		const message = error instanceof Error ? error.message : 'Could not create sound'
-		const status = message.includes('required') || message.includes('valid') || message.includes('too large') || message.includes('type') ? 400 : 500
+		const status =
+			message.includes('required') ||
+			message.includes('valid') ||
+			message.includes('too large') ||
+			message.includes('type') ||
+			message.includes('link') ||
+			message.includes('allowed') ||
+			message.includes('YouTube')
+				? 400
+				: 500
 		return jsonError(message, status)
 	}
 }
@@ -39,10 +50,26 @@ async function createFromJson(body: unknown, voterId: string) {
 	const description = String(data.description ?? '').trim()
 	const categoryId = String(data.categoryId ?? '')
 	const icon = data.icon ? String(data.icon) : null
-	const youtubeUrl = String(data.youtubeUrl ?? '')
-	const videoId = parseYouTubeVideoId(youtubeUrl)
 	if (!name) throw new Error('Name is required')
 	if (!(await getCategory(categoryId))) throw new Error('A valid category is required')
+
+	if (data.kind === 'url' || (typeof data.audioUrl === 'string' && !data.youtubeUrl)) {
+		const info = await probeRemoteAudio(String(data.audioUrl ?? ''), env.maxAudioBytes)
+		return createSound(
+			{
+				kind: 'url',
+				name,
+				description,
+				categoryId,
+				icon,
+				audioPath: toStoredAudioUrl(info.url)
+			},
+			voterId
+		)
+	}
+
+	const youtubeUrl = String(data.youtubeUrl ?? '')
+	const videoId = parseYouTubeVideoId(youtubeUrl)
 	if (!videoId) throw new Error('A valid YouTube URL is required')
 
 	return createSound(
@@ -71,6 +98,7 @@ async function createFromForm(request: Request, voterId: string) {
 	if (!(await getCategory(categoryId))) throw new Error('A valid category is required')
 
 	const cover = form.get('cover')
+	const coverMode = String(form.get('coverMode') ?? '')
 	let coverPath: string | null = null
 	const id = crypto.randomUUID()
 
@@ -78,6 +106,25 @@ async function createFromForm(request: Request, voterId: string) {
 		if (cover.size > env.maxCoverBytes) throw new Error('Cover image is too large')
 		if (!isCoverType(cover.type)) throw new Error('Cover must be JPEG, PNG, WebP, or GIF')
 		coverPath = await saveUpload('cover', id, cover)
+	} else if (coverMode === 'icon') {
+		coverPath = VISUAL_ICON
+	}
+
+	if (kind === 'url') {
+		const info = await probeRemoteAudio(String(form.get('audioUrl') ?? ''), env.maxAudioBytes)
+		return createSound(
+			{
+				id,
+				kind: 'url',
+				name,
+				description,
+				categoryId,
+				icon,
+				audioPath: toStoredAudioUrl(info.url),
+				coverPath
+			},
+			voterId
+		)
 	}
 
 	if (kind === 'youtube') {
@@ -86,6 +133,7 @@ async function createFromForm(request: Request, voterId: string) {
 		if (!videoId) throw new Error('A valid YouTube URL is required')
 		return createSound(
 			{
+				id,
 				kind: 'youtube',
 				name,
 				description,
@@ -107,6 +155,7 @@ async function createFromForm(request: Request, voterId: string) {
 	const audioPath = await saveUpload('audio', id, audio)
 	return createSound(
 		{
+			id,
 			kind: 'file',
 			name,
 			description,
