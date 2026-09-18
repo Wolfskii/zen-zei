@@ -1,12 +1,12 @@
 # Zen-Zei
 
-Glassmorphism mixer for nature, ASMR, and background loops. Play several tiles at once, each with its own volume, looping play/stop, and a 1–5 star vote. Add more sounds by pasting a YouTube URL or uploading a file.
-
 <p>
   <a href="https://www.buymeacoffee.com/wolfskii">
     <img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=wolfskii&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee" />
   </a>
 </p>
+
+Glassmorphism mixer for nature, ASMR, and background loops. Play several tiles at once, each with its own volume, looping play/stop, and a 1–5 star vote. Add more sounds by pasting a YouTube URL or uploading a file.
 
 The library and ratings are shared (Postgres). Mix state (what you were playing, volumes) stays in this browser.
 
